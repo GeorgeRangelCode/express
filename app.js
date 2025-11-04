@@ -28,6 +28,32 @@ app.get("/search", (_req, res) => {
   `);
 });
 
+app.post("/form", (req, res) => {
+  const name = req.body.name || "anonymous";
+  const email = req.body.email || "no email";
+  res.json({
+    message: `received form data`,
+    data: {
+      name,
+      email,
+    },
+  });
+});
+
+app.post("api/data", (req, res) => {
+  const data = req.body;
+  if (!data || Object.keys(data).length === 0) {
+    return res.status(400).json({
+      error: "No data provided",
+    });
+  }
+
+  res.status(200).json({
+    message: "Data received successfully",
+    data,
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server started on http://localhost:${PORT}`);
 });
