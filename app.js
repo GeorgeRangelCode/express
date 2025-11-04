@@ -1,11 +1,31 @@
 require("dotenv").config();
 const express = require("express");
+const bodyParser = require("body-parser");
+
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const PORT = process.env.PORT || 3000;
 console.log("🚀 ~ PORT:", PORT);
 
 app.get("/", (_req, res) => {
   res.send("Hello World!");
+});
+
+app.get("/users/:id", (_req, res) => {
+  const userId = _req.params.id;
+  res.send(`User ID: ${userId}`);
+});
+
+app.get("/search", (_req, res) => {
+  const term = _req.query.term || "no query";
+  const category = _req.query.category || "all";
+  res.send(`
+    <h1>Search Results</h1>
+    <p>Term: ${term}</p>
+    <p>Category: ${category}</p>
+  `);
 });
 
 app.listen(PORT, () => {
